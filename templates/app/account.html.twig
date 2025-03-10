@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Minics | Mon compte
+{% endblock %}
+
+{% block body %}
+
+	{# {{ dump(app.user) }} #}
+
+	<div class="col-12 col-sm-8 col-md-6 col-lg-6 mx-auto mb-4">
+		<h1 class="text-center mx-auto my-4">Vos informations personnelles</h1>
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex align-items-center justify-content-between">
+					<strong>Prénom</strong>
+					<span>{{ app.user.firstName }}</span>
+				</div>
+				<div class="d-flex align-items-center justify-content-between">
+					<strong>Nom</strong>
+					<span>{{ app.user.lastName }}</span>
+				</div>
+				<div class="d-flex align-items-center justify-content-between">
+					<strong>Email</strong>
+					<span>{{ app.user.email }}</span>
+				</div>
+				<div class="d-flex align-items-center justify-content-between">
+					<strong>Téléphone</strong>
+					<span>{{ app.user.phone }}</span>
+				</div>
+				<div class="d-flex align-items-center justify-content-between">
+					<strong>Adresse</strong>
+					<span>{{ app.user.address }}</span>
+				</div>
+				<div class="d-flex align-items-center justify-content-between">
+					<strong>Ville</strong>
+					<span>{{ app.user.city }}</span>
+				</div>
+				<div class="d-flex align-items-center justify-content-between">
+					<strong>Code postal</strong>
+					<span>{{ app.user.zipcode }}</span>
+				</div>
+				<div class="d-flex align-items-center justify-content-center mt-3">
+					<a href="" class="btn btn-dark">Modifier</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,33 @@
+# AuthName "Page d'administration protégée, veuillez vous identifier"
+# AuthType Basic
+# AuthUserFile "/home/etangdupontneuf/www/.htpasswd"
+# Require valid-user
+
+RewriteEngine on
+RewriteCond %{HTTP_HOST} ^minics.etangdupontneuf\.fr [NC]
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^(.*)$ https://www.minics.etangdupontneuf.fr/$1 [R,L]      
+
+# Rewrite Regle 1: Rediriger toutes les requêtes pour les urls incluant le nom des répertoires et le nom des fichiers se trouvant dans public_html (www).
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /public/.*\ HTTPS/
+
+# Rewrite Regle 2: Rediriger tous les www aux non-www et préserver le dossier et le chemin.
+RewriteCond %{HTTP_HOST} ^www.^minics.etangdupontneuf\.fr [NC]
+RewriteRule ^/(.*)$ minics.etangdupontneuf.fr/$1 [R=301,L]
+
+# Rewrite Regle 3: Reecrire les urls qui ne sont pas des dossiers.
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(.*)$ /public/$1 [L]
+
+<IfModule mod_rewrite.c>
+    Options -MultiViews
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ index.php [QSA,L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    <IfModule mod_alias.c>
+        RedirectMatch 302 ^/$ /index.php/
+    </IfModule>
+</IfModule>
