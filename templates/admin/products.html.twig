@@ -1,9 +1,110 @@
 {% extends 'base.admin.html.twig' %}
 
 {% block title %}
-    Admin Minics | Produits
+	Admin Minics | Produits
 {% endblock %}
 
 {% block body %}
-    
-{% endblock %}
+
+
+	<div
+		class="container mb-4">
+		{# // success, objet flash message #}
+		{% for label, messages in app. flashes(['success', 'danger'])%}
+			{# La categorie a ete enregistree." in OBJET MESSAGE #}
+			{% for message in messages %}
+				<div class="bg-{{ label }} text-white p-3 mb-3">{{ message|raw  }}
+				</div>
+			{% endfor %}
+		{% endfor %}
+		<div>
+			<h2 class="my-4 fs-3">Liste des articles</h2>
+
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Photo</th>
+						<th>Reference</th>
+						<th>Titre</th>
+						<th>Description</th>
+						<th>Categorie</th>
+						<th>Memoire</th>
+						<th>Couleur</th>
+						<th>Genre</th>
+						<th>Stock</th>
+						<th>Prix</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for item in products %}
+						<tr>
+							<td><img src="{{ asset('uploads/images/' ~ item.picture) }}" alt="{{ item.title }}" class="picture_product" width="100px"></td>
+							<td>{{ item.reference }}</td>
+							<td>{{ item.title }}</td>
+							<td>{{ item.description|slice(0,20) }}[...]</td>
+							<td>{{ item.category.title }}</td>
+							<td>{{ item.size }}</td>
+							<td>{{ item.color }}</td>
+							<td>{{ item.gender }}</td>
+							<td>{{ item.stock }}</td>
+							<td>{{ item.price }}</td>
+							<td>
+								<a href="{{ path('app_admin_products_update', {'id': item.id}) }}" class="btn btn-dark mb-2">
+									<i class="fa-solid fa-pen-to-square"></i>
+								</a>
+								<a href="" type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#product-{{ item.id }}">
+									<i class="fa-solid fa-trash"></i>
+								</a>
+							</td>
+						</tr>
+
+						<div class="modal fade" id="category-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation suppression</h1>
+										<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										Voulez-vous reellement supprimer l'article
+										<strong>{{ item.title }}</strong>
+										?
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+
+										<a href="" class="btn btn-primary">Confirmer</a>
+									</div>
+								</div>
+							</div>
+						</div>
+
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+		<div>
+			<h2 class="my-4 fs-3">Ajouter un produit</h2>
+
+			{{ form_start(productForm) }}
+			{{ form_row(productForm.reference) }}
+			{{ form_row(productForm.title) }}
+			{{ form_row(productForm.category) }}
+			{{ form_row(productForm.size) }}
+			{{ form_row(productForm.color) }}
+			{{ form_row(productForm.gender) }}
+			{{ form_row(productForm.description) }}
+			{{ form_row(productForm.stock) }}
+			{{ form_row(productForm.price) }}
+			{{ form_row(productForm.picture) }}
+
+			<div class="col-12 col-sm-6 col-md-2 col-lg-2>
+				                {% if pictureFile is not null %}
+				    <img src=" {{ asset('uploads/images/' ~ pictureFile) }} " alt=" picture product" class=" w-100">
+			{% endif %}
+		</div>
+		<button type="submit" class="btn btn-primary">Enregistrer</button>
+		{{ form_end(productForm) }}
+	</div>
+</div>{% endblock %}

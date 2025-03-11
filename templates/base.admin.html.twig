@@ -32,6 +32,9 @@
 	</head>
 
 	<body>
+		{# declaration de variable TWIG, retourne la route sur laquelle on se trouve #}
+		{% set currentPath = app.request.attributes.get('_route')%}
+		{{ dump(currentPath) }}
 		<div id="app">
 			<nav id="navbar-main" class="navbar is-fixed-top">
 				<div class="navbar-brand">
@@ -52,29 +55,11 @@
 																																																								                  alt="John Doe" />
 																																																								              </div> -->
 								<div class="is-user-name">
-									<span>Grégory LACROIX</span>
+									<span>ALBERT GRABAR</span>
 								</div>
 								<!-- <span class="icon"><i class="mdi mdi-chevron-down"></i></span> -->
 							</a>
-							<!-- <div class="navbar-dropdown">
-																																																	                <a href="profile.php" class="navbar-item">
-																																																	                  <span class="icon"><i class="mdi mdi-account"></i></span>
-																																																	                  <span>My Profile</span>
-																																																	                </a>
-																																																	                <a class="navbar-item">
-																																																	                  <span class="icon"><i class="mdi mdi-settings"></i></span>
-																																																	                  <span>Settings</span>
-																																																	                </a>
-																																																	                <a class="navbar-item">
-																																																	                  <span class="icon"><i class="mdi mdi-email"></i></span>
-																																																	                  <span>Messages</span>
-																																																	                </a>
-																																																	                <hr class="navbar-divider" />
-																																																	                <a class="navbar-item">
-																																																	                  <span class="icon"><i class="mdi mdi-logout"></i></span>
-																																																	                  <span>Log Out</span>
-																																																	                </a>
-																																																	              </div> -->
+
 						</div>
 						<a href="connexion.php?action=logout" title="Log out" class="navbar-item is-desktop-icon-only">
 							<span class="icon">
@@ -97,9 +82,11 @@
 					<p class="menu-label">General</p>
 					<ul class="menu-list">
 						<li>
-							<a href="{{ path('app_admin') }}" class="is-active has-icon">
-								<span class="icon has-update-mark">
+							<a href="{{ path('app_admin') }}" class="{% if currentPath is same as 'app_admin' %}is-active{% endif%} has-icon">
+							
+								<span class="icon {% if currentPath is same as 'app_admin' %} has-update-mark{% endif%}">
 									<i class="mdi mdi-desktop-mac"></i>
+
 								</span>
 								<span class="menu-item-label">Dashboard</span>
 							</a>
@@ -108,8 +95,8 @@
 					<p class="menu-label">MENU</p>
 					<ul class="menu-list">
 						<li>
-							<a href="{{ path('app_admin_category') }}" class="has-icon">
-								<span class="icon has-update-mark">
+							<a href="{{ path('app_admin_category') }}" class="{% if currentPath is same as 'app_admin_category' %}is-active{% endif%} has-icon">
+								<span class="icon {% if currentPath is same as 'app_admin_category' %} has-update-mark{% endif%}">
 									<span class="mdi mdi-store"></span>
 								</span>
 								<span class="menu-item-label">Category produit
@@ -117,24 +104,24 @@
 							</a>
 						</li>
 						<li>
-							<a href="{{ path('app_admin_products') }}" class="has-icon">
-								<span class="icon has-update-mark">
+							<a href="{{ path('app_admin_products') }}" class="{% if currentPath is same as 'app_admin_products' %}is-active{% endif%} has-icon">
+								<span class="icon {% if currentPath is same as 'app_admi_products' %} has-update-mark{% endif%}">
 									<span class="mdi mdi-store"></span>
 								</span>
 								<span class="menu-item-label">Boutique</span>
 							</a>
 						</li>
 						<li>
-							<a href="{{ path('app_admin_orders') }}" class="is-active has-icon">
-								<span class="icon has-update-mark">
+							<a href="{{ path('app_admin_orders') }}" class="{% if currentPath is same as 'app_admin_orders' %}is-active{% endif%} has-icon">
+								<span class="icon {% if currentPath is same as 'app_admin_orders' %} has-update-mark{% endif%}">
 									<span class="mdi mdi-sheep"></span>
 								</span>
 								<span class="menu-item-label">Commandes</span>
 							</a>
 						</li>
 						<li>
-							<a href="{{ path('app_admin_users') }}" class="is-active has-icon">
-								<span class="icon has-update-mark">
+							<a href="{{ path('app_admin_users') }}" class="{% if currentPath is same as 'app_admin_users' %}is-active{% endif%} has-icon">
+								<span class="icon {% if currentPath is same as 'app_admin_users' %} has-update-mark{% endif%}">
 									<i class="mdi mdi-account-circle"></i>
 								</span>
 								<span class="menu-item-label">Utilisateurs</span>
@@ -158,7 +145,7 @@
 				<div class="container-fluid">
 					<div class="level">
 						<div class="level-left">
-							<div class="level-item">© 2025, Grégory LACROIX</div>
+							<div class="level-item">© 2025, ALBERT GRABAR</div>
 						</div>
 					</div>
 				</div>
@@ -166,10 +153,10 @@
 
 			<!-- Scripts below are for demo only -->
 			<script type="text/javascript" src="{{ asset('js/main.min.js') }}"></script>
-			<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-			<script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
-			<script src="https://cdn.datatables.net/2.2.2/js/dataTables.bulma.js"></script>
-			<script src="assets/js/dataTable/dataTable.js"></script>
+			{# // <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+			// <script src="https://cdn.datatables.net/2.2.2/js/dataTables.js"></script>
+			// <script src="https://cdn.datatables.net/2.2.2/js/dataTables.bulma.js"></script>
+			// <script src="assets/js/dataTable/dataTable.js"></script> #}
 
 			{% block javascripts %}{% endblock %}
 
