@@ -5,6 +5,11 @@
 {% endblock %}
 
 {% block body %}
+	<style>
+		.modal-backdrop {
+			z-index: 1 !important;
+		}
+	</style>
 
 
 	<div
@@ -59,7 +64,7 @@
 							</td>
 						</tr>
 
-						<div class="modal fade" id="category-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+						<div class="modal fade" id="product-{{ item.id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
 							<div class="modal-dialog">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -74,7 +79,7 @@
 									<div class="modal-footer">
 										<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
 
-										<a href="" class="btn btn-primary">Confirmer</a>
+										<a href="{{ path('app_admin_products_remove', {'id': item.id}) }}" class="btn btn-primary">Confirmer</a>
 									</div>
 								</div>
 							</div>
@@ -99,11 +104,14 @@
 			{{ form_row(productForm.price) }}
 			{{ form_row(productForm.picture) }}
 
-			<div class="col-12 col-sm-6 col-md-2 col-lg-2>
-				                {% if pictureFile is not null %}
+			<div class="col-12 col-sm-6 col-md-2 col-lg-2">
+
+
+			{% if pictureFile is not null %}
 				    <img src=" {{ asset('uploads/images/' ~ pictureFile) }} " alt=" picture product" class=" w-100">
 			{% endif %}
 		</div>
+		
 		<button type="submit" class="btn btn-primary">Enregistrer</button>
 		{{ form_end(productForm) }}
 	</div>
