@@ -4,12 +4,20 @@
 
 {% block body %}
     <div class="container my-5">
+    {# // success, objet flash message #}
+		{% for label, messages in app. flashes(['success', 'danger', 'warning']) %}
+			{# La categorie a ete enregistree." in OBJET MESSAGE #}
+			{% for message in messages %}
+				<div class="bg-{{ label }} text-white p-3 mb-3">{{ message|raw  }}
+				</div>
+			{% endfor %}
+		{% endfor %}
     <table class="table table-borderless">
         <thead>
             <tr>
                 <th>Photo</th>
                 <th>Title</th>
-                <th>Reference</th©
+                <th>Reference</th>
                 <th>Categorie</th>
                 <th>Quantite</th>
                 <th>Prix unitaire</th>
@@ -24,10 +32,43 @@
                 </tr>
             {% else %}
                 {% for item in dataCart %}
-
+                <tr>
+                    <td><img src="{{ asset('uploads/images/' ~ item.product.picture) }}" alt="{{ item.product.title }}" class="product_picture" width="50px">
+                   </td>
+                    <td>{{ item.product.title }}</td>
+                    <td>{{ item.product.reference }}</td>
+                    <td>{{ item.product.category.title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.product.price}} €</td>
+                    <td>{{ (item.product.price * item.quantity) }} €</td>
+                    <td>
+                        <a href="{{ path('app_cart_remove', {'id': item.product.id } )}}" class="btn btn-danger">
+                        <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>                                
+                </tr>
                 {% endfor %}
+                <tr>
+                    <th>MONTANT TOTAL</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th>{{ total }}€</th>
+                    <th></th>
+                </tr>
             {% endif %}
         </tbody>
     </table>
+
+        {% if dataCart is not empty %}
+            {% if app.user %}
+                <a href="{{ path('app_cart_payment')}}" class="btn btn-dark mr-2">VALIDER LE PAIMENT</a>
+                <a href="{{ path('app_cart_delete') }}" class="btn btn-dark mr-2">VIDER LE PANIER</a>
+            {% else %}
+                <a href="{{ path('app_login') }}" class="btn btn-dark">IDENTIFIEZ-VOUS</a>
+            {% endif %}
+        {% endif %}
     </div>
 {% endblock %}

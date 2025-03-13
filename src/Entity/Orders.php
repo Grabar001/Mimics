@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OrdersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrdersRepository::class)]
@@ -35,9 +37,18 @@ class Orders
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'orders')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?OrderDetails $orderDetails = null;
+    /**
+     * @var Collection<int, OrderDetails>
+     */
+    #[ORM\OneToMany(targetEntity: OrderDetails::class, mappedBy: 'orders', orphanRemoval: true)]
+    private Collection $orderDetails;
+
+    public function __construct()
+    {
+        $this->orderDetails = new ArrayCollection();
+    }
+
+  
 
     public function getId(): ?int
     {
@@ -128,15 +139,34 @@ class Orders
         return $this;
     }
 
-    public function getOrderDetails(): ?OrderDetails
+    /**
+     * @return Collection<int, OrderDetails>
+     */
+    public function getOrderDetails(): Collection
     {
         return $this->orderDetails;
     }
 
-    public function setOrderDetails(?OrderDetails $orderDetails): static
+    public function addOrderDetail(OrderDetails $orderDetail): static
     {
-        $this->orderDetails = $orderDetails;
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails->add($orderDetail);
+            $orderDetail->setOrders($this);
+        }
 
         return $this;
     }
+
+    public function removeOrderDetail(OrderDetails $orderDetail): static
+    {
+        if ($this->orderDetails->removeElement($orderDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDetail->getOrders() === $this) {
+                $orderDetail->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

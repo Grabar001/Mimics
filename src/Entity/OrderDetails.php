@@ -21,23 +21,15 @@ class OrderDetails
     #[ORM\Column]
     private ?float $price = null;
 
-    /**
-     * @var Collection<int, Orders>
-     */
-    #[ORM\OneToMany(targetEntity: Orders::class, mappedBy: 'orderDetails', orphanRemoval: true)]
-    private Collection $orders;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
 
-    /**
-     * @var Collection<int, Product>
-     */
-    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'orderDetails')]
-    private Collection $product;
+    #[ORM\ManyToOne(inversedBy: 'orderDetails')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Orders $orders = null;
 
-    public function __construct()
-    {
-        $this->orders = new ArrayCollection();
-        $this->product = new ArrayCollection();
-    }
+   
 
     public function getId(): ?int
     {
@@ -68,57 +60,30 @@ class OrderDetails
         return $this;
     }
 
-    /**
-     * @return Collection<int, Orders>
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Orders $order): static
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->setOrderDetails($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrder(Orders $order): static
-    {
-        if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getOrderDetails() === $this) {
-                $order->setOrderDetails(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Product>
-     */
-    public function getProduct(): Collection
+    public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    public function addProduct(Product $product): static
+    public function setProduct(?Product $product): static
     {
-        if (!$this->product->contains($product)) {
-            $this->product->add($product);
-        }
+        $this->product = $product;
 
         return $this;
     }
 
-    public function removeProduct(Product $product): static
+    public function getOrders(): ?Orders
     {
-        $this->product->removeElement($product);
+        return $this->orders;
+    }
+
+    public function setOrders(?Orders $orders): static
+    {
+        $this->orders = $orders;
 
         return $this;
     }
+
+
+   
 }

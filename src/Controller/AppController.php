@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 final class AppController extends AbstractController
@@ -21,7 +22,8 @@ final class AppController extends AbstractController
             5. Selectionner en BDD le produit
             6. Afficher les informations du produit (titre, reference, image etc...)
         */
-        $dbProduct = $repoProduct->findAll();
+        $dbProduct = $repoProduct->getMaxProduct(10);
+        // $dbProduct = $repoProduct->findAll(); если нужны все продукты
 
         return $this->render('app/index.html.twig', [
             'dbProduct'=> $dbProduct
@@ -74,7 +76,5 @@ final class AppController extends AbstractController
     {
         return $this->render('app/account.html.twig', []);
     }
-
-   
-   
+    
 }
